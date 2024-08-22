@@ -1,0 +1,48 @@
+# Django-specific
+.DS_Store
+*.pyc
+*.pyo
+__pycache__/
+.pytest_cache/
+.tox/
+env/
+local.py
+
+# Virtual environment
+venv/
+include/
+lib/
+local/
+.eggs/
+*.egg-info/
+
+# Compiled files
+*.so
+*.dll
+*.eot
+*.ttf
+*.otf
+
+# Auto-generated files
+Thumbs.db
+desktop.ini
+*.swp
+*.bak
+*.tmp
+
+# IDE files
+.idea/
+.vscode/
+*.suo
+*.ntvs*
+*.user
+*.sln
+*.suo
+
+# Specific to Django settings in development
+db.sqlite3
+media/
+static/
+
+# Secrets management
+.env
