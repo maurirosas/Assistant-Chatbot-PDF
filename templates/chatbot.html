@@ -17,6 +17,7 @@
     display: flex;
     flex-direction: column;
     height: 100vh;
+    overflow: hidden;
   }
 
   .card {
@@ -364,6 +365,12 @@
   }
 
   // Funcionalidad del formulario de mensajes
+  function scrollToBottom() {
+    setTimeout(() => {
+      messagesList.scrollTop = messagesList.scrollHeight;
+    }, 100); // Ajusta el retraso si es necesario
+  }
+
   messageForm.addEventListener('submit', (event) => {
     event.preventDefault();
 
@@ -388,7 +395,7 @@
     messagesList.appendChild(messageItem);
 
     messageInput.value = '';
-    messagesList.scrollTop = messagesList.scrollHeight;
+    scrollToBottom();
 
     fetch('', {
       method: 'POST',
@@ -415,7 +422,7 @@
         </div>
       `;
       messagesList.appendChild(messageItem);
-      messagesList.scrollTop = messagesList.scrollHeight;
+      scrollToBottom();
     });
   });
 
