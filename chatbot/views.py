@@ -11,13 +11,13 @@ thread = client.beta.threads.create()
 thread_id = thread.id
 
 
-def ask_assistant(user_input):
+def ask_assistant(user_input, pdf_context):
 
     # Add the user message to the Thread
     message = client.beta.threads.messages.create(
         thread_id=thread_id,
         role="user",
-        content=user_input,
+        content=user_input+". The answer has to be based only on the file "+pdf_context+" stored on the vector store.",
     )
 
     run = client.beta.threads.runs.create_and_poll(
@@ -46,7 +46,8 @@ def ask_assistant(user_input):
 
 def chatbot(request):
     if request.method =="POST":
+        pdf_context=request.POST.get('pdf_context')
         message = request.POST.get('message')
-        response = ask_assistant(message)
+        response = ask_assistant(message,pdf_context)
         return JsonResponse({'message': message, 'response': response})
     return render(request, 'chatbot.html')

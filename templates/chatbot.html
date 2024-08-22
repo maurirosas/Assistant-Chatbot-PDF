@@ -2,7 +2,7 @@
 
 {% block styles %}
 <style>
-  /* Estilos existentes */
+  /* Estilos existentes y actualizados */
   body, html {
     height: 100%;
     margin: 0;
@@ -140,12 +140,16 @@
     border-radius: 10px;
     max-width: 400px;
     width: 80%;
+    max-height: 80%;
+    overflow-y: auto;
   }
 
   .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     font-size: 20px;
     margin-bottom: 10px;
-    text-align: center;
   }
 
   .modal-body {
@@ -188,6 +192,20 @@
   .game-option:hover {
     background-color: #e0e1dd;
   }
+
+  /* Scrollable modal */
+  .modal-body {
+    overflow-y: auto;
+    max-height: 400px; /* Adjust according to your design */
+  }
+
+  /* Close button for modal */
+  .close-modal {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+  }
 </style>
 {% endblock %}
 
@@ -203,7 +221,7 @@
               <b>PDF Assistant</b>
             </div>
             <div class="message-content">
-              Hi, I am your PDF assistant, you can ask me anything. Let's start by selecting a game.
+              Hi, I am your PDF assistant, you can ask me anything about Boardgames Instructions. Let's start by selecting a game.
             </div>
           </div>
         </li>
@@ -223,10 +241,13 @@
 <!-- Modal para seleccionar juego -->
 <div id="game-modal" class="modal">
   <div class="modal-content">
-    <div class="modal-header">Select a Game</div>
+    <div class="modal-header">
+      Select a Game
+      <button class="close-modal" id="close-modal">&times;</button>
+    </div>
     <div class="modal-body">
-      <!-- Buscador por texto (aún no funcional) -->
-      <input type="text" placeholder="Search games..." style="padding: 10px; border-radius: 5px; margin-bottom: 10px; border: 1px solid #ccc;">
+      <!-- Buscador por texto -->
+      <input type="text" id="game-search" placeholder="Search games..." style="padding: 10px; border-radius: 5px; margin-bottom: 10px; border: 1px solid #ccc;">
 
       <!-- Botones de categorías -->
       <button class="category-button" data-category="board">Board Games</button>
@@ -251,9 +272,11 @@
     const messageForm = document.querySelector('.message-form');
     const messagesList = document.querySelector('.messages-list');
     const messageInput = document.querySelector('.message-input');
+    const closeModalButton = document.getElementById('close-modal');
+    const gameSearch = document.getElementById('game-search');
 
     // Arrays con los juegos por categoría
-    const boardGames = ['Shark Attack Rules', 'Cover Me Rules', 'Sonora Rules'];
+    const boardGames = ["10 Days in the USA Rules.pdf", "20 Questions Rules.pdf", "30 Seconds Rules.pdf"];
     const childrenGames = ['Duck Duck Goose', 'Hide and Seek', 'Musical Chairs'];
     const diceGames = ['Yahtzee', 'Farkle', 'Tenzi'];
     const partyGames = ['Charades', 'Pictionary', 'Codenames'];
@@ -263,36 +286,77 @@
       gameModal.style.display = 'flex';
     });
 
+    // Cierra el modal al hacer click en la "X"
+    closeModalButton.addEventListener('click', () => {
+      gameModal.style.display = 'none';
+    });
+
     // Muestra las opciones de juegos al hacer click en las categorías
     document.querySelectorAll('.category-button').forEach(button => {
-      button.addEventListener('click', () => {
-        const category = button.getAttribute('data-category');
-        const optionsContainer = document.getElementById(`${category}-games`);
-        
-        optionsContainer.innerHTML = '';
-
-        let games = [];
-        if (category === 'board') games = boardGames;
-        if (category === 'children') games = childrenGames;
-        if (category === 'dice') games = diceGames;
-        if (category === 'party') games = partyGames;
-
-        games.forEach(game => {
-          const option = document.createElement('button');
-          option.classList.add('game-option');
-          option.textContent = game;
-          option.addEventListener('click', () => {
-            gameModal.style.display = 'none';
-            selectGameButton.style.display = 'none';
-            messageForm.style.display = 'flex';
-          });
-          optionsContainer.appendChild(option);
-        });
-
-        // Muestra las opciones
-        optionsContainer.style.display = optionsContainer.style.display === 'flex' ? 'none' : 'flex';
+      button.addEventListener('click', function() {
+        const category = this.getAttribute('data-category');
+        const optionsDiv = document.getElementById(`${category}-games`);
+        const isVisible = optionsDiv.style.display === 'flex';
+        optionsDiv.style.display = isVisible ? 'none' : 'flex';
       });
     });
+
+    // Llenar las opciones de juegos
+    function fillGameOptions(category, games) {
+      const optionsDiv = document.getElementById(`${category}-games`);
+      games.forEach(game => {
+        const option = document.createElement('div');
+        option.classList.add('game-option');
+        option.textContent = game;
+        option.addEventListener('click', () => {
+          selectGame(game);
+        });
+        optionsDiv.appendChild(option);
+      });
+    }
+
+    fillGameOptions('board', boardGames);
+    fillGameOptions('children', childrenGames);
+    fillGameOptions('dice', diceGames);
+    fillGameOptions('party', partyGames);
+
+    // Filtra los juegos según la búsqueda
+    gameSearch.addEventListener('input', function() {
+      const searchTerm = this.value.toLowerCase();
+      const gameOptions = document.querySelectorAll('.game-option');
+      document.querySelectorAll('.game-options').forEach(div => {
+        div.style.display = 'none';
+      });
+      let anyMatch = false;
+      gameOptions.forEach(option => {
+        if (option.textContent.toLowerCase().includes(searchTerm)) {
+          option.parentElement.style.display = 'flex';
+          option.style.display = 'block';
+          anyMatch = true;
+        } else {
+          option.style.display = 'none';
+        }
+      });
+      if (!anyMatch) {
+        gameOptions.forEach(option => {
+          option.parentElement.style.display = 'none';
+        });
+      }
+    });
+
+    // Selección de un juego
+    function selectGame(gameName) {
+      const newMessage = document.createElement('li');
+      newMessage.classList.add('message', 'sent');
+      newMessage.innerHTML = `<div class="message-text"><div class="message-content">You selected: ${gameName}</div></div>`;
+      messagesList.appendChild(newMessage);
+
+      // Oculta el modal
+      gameModal.style.display = 'none';
+
+      // Habilita el formulario de mensaje
+      messageForm.style.display = 'flex';
+    }
 
     // Funcionalidad del formulario de mensajes
     messageForm.addEventListener('submit', (event) => {
