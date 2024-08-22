@@ -49,5 +49,6 @@ def chatbot(request):
         pdf_context=request.POST.get('pdf_context')
         message = request.POST.get('message')
         response = ask_assistant(message,pdf_context)
+        print(pdf_context)
         return JsonResponse({'message': message, 'response': response})
     return render(request, 'chatbot.html')

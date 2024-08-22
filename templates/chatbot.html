@@ -230,6 +230,7 @@
   </div>
   <form class="message-form">
     {% csrf_token %}
+    <input type="hidden" name="pdf_context" id="pdf-context-field">
     <input type="text" class="message-input" placeholder="Type your message...">
     <button type="submit" class="btn-send">Send</button>
   </form>
@@ -265,158 +266,165 @@
   </div>
 </div>
 
+
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-    const selectGameButton = document.getElementById('select-game-button');
-    const gameModal = document.getElementById('game-modal');
-    const messageForm = document.querySelector('.message-form');
-    const messagesList = document.querySelector('.messages-list');
-    const messageInput = document.querySelector('.message-input');
-    const closeModalButton = document.getElementById('close-modal');
-    const gameSearch = document.getElementById('game-search');
+  const selectGameButton = document.getElementById('select-game-button');
+  const gameModal = document.getElementById('game-modal');
+  const messageForm = document.querySelector('.message-form');
+  const messagesList = document.querySelector('.messages-list');
+  const messageInput = document.querySelector('.message-input');
+  const closeModalButton = document.getElementById('close-modal');
+  const gameSearch = document.getElementById('game-search');
 
-    // Arrays con los juegos por categoría
-    const boardGames = ["10 Days in the USA Rules.pdf", "20 Questions Rules.pdf", "30 Seconds Rules.pdf"];
-    const childrenGames = ['Duck Duck Goose', 'Hide and Seek', 'Musical Chairs'];
-    const diceGames = ['Yahtzee', 'Farkle', 'Tenzi'];
-    const partyGames = ['Charades', 'Pictionary', 'Codenames'];
+  // Arrays con los juegos por categoría
+  const boardGames = ["10 Days in the USA Rules.pdf", "20 Questions Rules.pdf", "30 Seconds Rules.pdf"];
+  const childrenGames = ['Duck Duck Goose', 'Hide and Seek', 'Musical Chairs'];
+  const diceGames = ['Yahtzee', 'Farkle', 'Tenzi'];
+  const partyGames = ['Charades', 'Pictionary', 'Codenames'];
 
-    // Muestra el modal al hacer click en "Select a Game"
-    selectGameButton.addEventListener('click', () => {
-      gameModal.style.display = 'flex';
-    });
+  // Muestra el modal al hacer click en "Select a Game"
+  selectGameButton.addEventListener('click', () => {
+    gameModal.style.display = 'flex';
+  });
 
-    // Cierra el modal al hacer click en la "X"
-    closeModalButton.addEventListener('click', () => {
-      gameModal.style.display = 'none';
-    });
+  // Cierra el modal al hacer click en la "X"
+  closeModalButton.addEventListener('click', () => {
+    gameModal.style.display = 'none';
+  });
 
-    // Muestra las opciones de juegos al hacer click en las categorías
-    document.querySelectorAll('.category-button').forEach(button => {
-      button.addEventListener('click', function() {
-        const category = this.getAttribute('data-category');
-        const optionsDiv = document.getElementById(`${category}-games`);
-        const isVisible = optionsDiv.style.display === 'flex';
-        optionsDiv.style.display = isVisible ? 'none' : 'flex';
-      });
-    });
-
-    // Llenar las opciones de juegos
-    function fillGameOptions(category, games) {
+  // Muestra las opciones de juegos al hacer click en las categorías
+  document.querySelectorAll('.category-button').forEach(button => {
+    button.addEventListener('click', function() {
+      const category = this.getAttribute('data-category');
       const optionsDiv = document.getElementById(`${category}-games`);
-      games.forEach(game => {
-        const option = document.createElement('div');
-        option.classList.add('game-option');
-        option.textContent = game;
-        option.addEventListener('click', () => {
-          selectGame(game);
-        });
-        optionsDiv.appendChild(option);
-      });
-    }
+      const isVisible = optionsDiv.style.display === 'flex';
+      optionsDiv.style.display = isVisible ? 'none' : 'flex';
+    });
+  });
 
-    fillGameOptions('board', boardGames);
-    fillGameOptions('children', childrenGames);
-    fillGameOptions('dice', diceGames);
-    fillGameOptions('party', partyGames);
+  // Llenar las opciones de juegos
+  function fillGameOptions(category, games) {
+    const optionsDiv = document.getElementById(`${category}-games`);
+    games.forEach(game => {
+      const option = document.createElement('div');
+      option.classList.add('game-option');
+      option.textContent = game;
+      option.addEventListener('click', () => {
+        selectGame(game);
+      });
+      optionsDiv.appendChild(option);
+    });
+  }
 
-    // Filtra los juegos según la búsqueda
-    gameSearch.addEventListener('input', function() {
-      const searchTerm = this.value.toLowerCase();
-      const gameOptions = document.querySelectorAll('.game-option');
-      document.querySelectorAll('.game-options').forEach(div => {
-        div.style.display = 'none';
-      });
-      let anyMatch = false;
-      gameOptions.forEach(option => {
-        if (option.textContent.toLowerCase().includes(searchTerm)) {
-          option.parentElement.style.display = 'flex';
-          option.style.display = 'block';
-          anyMatch = true;
-        } else {
-          option.style.display = 'none';
-        }
-      });
-      if (!anyMatch) {
-        gameOptions.forEach(option => {
-          option.parentElement.style.display = 'none';
-        });
+  fillGameOptions('board', boardGames);
+  fillGameOptions('children', childrenGames);
+  fillGameOptions('dice', diceGames);
+  fillGameOptions('party', partyGames);
+
+  // Filtra los juegos según la búsqueda
+  gameSearch.addEventListener('input', function() {
+    const searchTerm = this.value.toLowerCase();
+    const gameOptions = document.querySelectorAll('.game-option');
+    document.querySelectorAll('.game-options').forEach(div => {
+      div.style.display = 'none';
+    });
+    let anyMatch = false;
+    gameOptions.forEach(option => {
+      if (option.textContent.toLowerCase().includes(searchTerm)) {
+        option.parentElement.style.display = 'flex';
+        option.style.display = 'block';
+        anyMatch = true;
+      } else {
+        option.style.display = 'none';
       }
     });
+    if (!anyMatch) {
+      gameOptions.forEach(option => {
+        option.parentElement.style.display = 'none';
+      });
+    }
+  });
 
-    // Selección de un juego
-    function selectGame(gameName) {
-      const newMessage = document.createElement('li');
-      newMessage.classList.add('message', 'sent');
-      newMessage.innerHTML = `<div class="message-text"><div class="message-content">You selected: ${gameName}</div></div>`;
-      messagesList.appendChild(newMessage);
+  // Selección de un juego
+  function selectGame(gameName) {
+    const newMessage = document.createElement('li');
+    newMessage.classList.add('message', 'sent');
+    newMessage.innerHTML = `<div class="message-text"><div class="message-content">You selected: ${gameName}</div></div>`;
+    messagesList.appendChild(newMessage);
 
-      // Oculta el modal
-      gameModal.style.display = 'none';
+    // Oculta el modal
+    gameModal.style.display = 'none';
 
-      // Habilita el formulario de mensaje
-      messageForm.style.display = 'flex';
+    // Habilita el formulario de mensaje
+    messageForm.style.display = 'flex';
+
+    // Actualiza el campo oculto con el nombre del archivo seleccionado
+    document.getElementById('pdf-context-field').value = gameName;
+  }
+
+  // Funcionalidad del formulario de mensajes
+  messageForm.addEventListener('submit', (event) => {
+    event.preventDefault();
+
+    const message = messageInput.value.trim();
+    const pdfContext = document.getElementById('pdf-context-field').value;
+
+    if (message.length === 0) {
+      return;
     }
 
-    // Funcionalidad del formulario de mensajes
-    messageForm.addEventListener('submit', (event) => {
-      event.preventDefault();
+    const messageItem = document.createElement('li');
+    messageItem.classList.add('message', 'sent');
+    messageItem.innerHTML = `
+      <div class="message-text">
+          <div class="message-sender">
+              <b>You</b>
+          </div>
+          <div class="message-content">
+              ${message}
+          </div>
+      </div>`;
+    messagesList.appendChild(messageItem);
 
-      const message = messageInput.value.trim();
-      if (message.length === 0) {
-        return;
-      }
+    messageInput.value = '';
+    messagesList.scrollTop = messagesList.scrollHeight;
 
+    fetch('', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({
+        'csrfmiddlewaretoken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+        'message': message,
+        'pdf_context': pdfContext
+      })
+    })
+    .then(response => response.json())
+    .then(data => {
+      const response = data.response;
       const messageItem = document.createElement('li');
-      messageItem.classList.add('message', 'sent');
+      messageItem.classList.add('message', 'received');
       messageItem.innerHTML = `
         <div class="message-text">
             <div class="message-sender">
-                <b>You</b>
+              <b>PDF Assistant</b>
             </div>
             <div class="message-content">
-                ${message}
+                ${response}
             </div>
-        </div>`;
+        </div>
+      `;
       messagesList.appendChild(messageItem);
-
-      messageInput.value = '';
       messagesList.scrollTop = messagesList.scrollHeight;
-
-      fetch('', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-        body: new URLSearchParams({
-          'csrfmiddlewaretoken': document.querySelector('[name=csrfmiddlewaretoken]').value,
-          'message': message
-        })
-      })
-      .then(response => response.json())
-      .then(data => {
-        const response = data.response;
-        const messageItem = document.createElement('li');
-        messageItem.classList.add('message', 'received');
-        messageItem.innerHTML = `
-          <div class="message-text">
-              <div class="message-sender">
-                <b>PDF Assistant</b>
-              </div>
-              <div class="message-content">
-                  ${response}
-              </div>
-          </div>
-        `;
-        messagesList.appendChild(messageItem);
-        messagesList.scrollTop = messagesList.scrollHeight;
-      });
-    });
-
-    // Cierra el modal si se hace clic fuera del contenido
-    window.addEventListener('click', (event) => {
-      if (event.target === gameModal) {
-        gameModal.style.display = 'none';
-      }
     });
   });
+
+  // Cierra el modal si se hace clic fuera del contenido
+  window.addEventListener('click', (event) => {
+    if (event.target === gameModal) {
+      gameModal.style.display = 'none';
+    }
+  });
+});
 </script>
 {% endblock %}
