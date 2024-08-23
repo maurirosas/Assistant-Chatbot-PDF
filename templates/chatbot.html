@@ -2,7 +2,6 @@
 
 {% block styles %}
 <style>
-  /* Estilos existentes y actualizados */
   body, html {
     height: 100%;
     margin: 0;
@@ -122,7 +121,6 @@
     background-color: #778da9;
   }
 
-  /* Estilos para el modal */
   .modal {
     display: none;
     position: fixed;
@@ -194,13 +192,11 @@
     background-color: #e0e1dd;
   }
 
-  /* Scrollable modal */
   .modal-body {
     overflow-y: auto;
-    max-height: 400px; /* Adjust according to your design */
+    max-height: 400px; 
   }
 
-  /* Close button for modal */
   .close-modal {
     background: none;
     border: none;
@@ -237,10 +233,8 @@
   </form>
 </div>
 
-<!-- Botón para seleccionar juego -->
 <button id="select-game-button" class="category-button">Select a Game</button>
 
-<!-- Modal para seleccionar juego -->
 <div id="game-modal" class="modal">
   <div class="modal-content">
     <div class="modal-header">
@@ -248,10 +242,8 @@
       <button class="close-modal" id="close-modal">&times;</button>
     </div>
     <div class="modal-body">
-      <!-- Buscador por texto -->
       <input type="text" id="game-search" placeholder="Search games..." style="padding: 10px; border-radius: 5px; margin-bottom: 10px; border: 1px solid #ccc;">
 
-      <!-- Botones de categorías -->
       <button class="category-button" data-category="board">Board Games</button>
       <div class="game-options" id="board-games"></div>
 
@@ -278,23 +270,23 @@
   const closeModalButton = document.getElementById('close-modal');
   const gameSearch = document.getElementById('game-search');
 
-  // Arrays con los juegos por categoría
+  // Game Arrays
   const boardGames = ["10 Days in the USA Rules.pdf", "20 Questions Rules.pdf", "30 Seconds Rules.pdf", "5th Avenue Rules.pdf", "A Castle For All Seasons Rules.pdf", "After Words Rules.pdf", "Alexandros Rules.pdf", "Alhambra Rules.pdf", "American Girl Treasures Rules.pdf", "American Trivia Rules.pdf", "Amun Re Rules.pdf", "Amyitis Rules.pdf", "Antike Rules.pdf", "Anti-Monopoly Rules.pdf", "Aqua Romana Rules.pdf", "Aquaretto Rules.pdf", "Arkadia Rules.pdf", "Around the World in 80 Days Rules.pdf", "Arraial Rules.pdf", "Augsburg 1520 Rules.pdf", "Axis & Allies Rules.pdf", "Azimuth Rules.pdf", "Azul Rules.pdf", "Backgammon Rules.pdf", "Batavia Rules.pdf", "Battle of the Sexes Rules.pdf", "Battleball Rules.pdf", "Bean Trader Rules.pdf", "Between Two Castles Rules.pdf", "Between Two Cities Rules.pdf", "Big Brain Academy Rules.pdf", "Billionaire Rules.pdf", "Blurt Rules.pdf", "Bonnie & Clyde Rules.pdf", "Brain Games Rules.pdf", "Bratz: Passion for Fashion Rules.pdf", "Bristol 1350 Rules.pdf", "Buy The Vote Rules.pdf", "Can't Stop Rules.pdf", "Carcassonne Rules.pdf", "Careers Rules.pdf", "Cartagena Rules.pdf", "Cash a Catch Rules.pdf", "Catapult Kingdoms Rules.pdf", "Catch 22 Rules.pdf", "Caylus Rules.pdf", "Celtica Rules.pdf", "Charterstone Rules.pdf", "Chateau Roquefort Rules.pdf", "Chess Rules.pdf", "Children Rules.pdf", "Chinese Checkers Rules.pdf", "Chops Rules.pdf", "Civilization Rules.pdf", "Clans Rules.pdf", "Clue Rules.pdf", "Cluedo Rules.pdf", "CodeMonkey - Going Bananas Rules.pdf", "Codenames Rules.pdf", "Cosmic Encounter Rules.pdf", "Cover Me Rules.pdf", "Cranium Rules.pdf", "Crowded Waters Rules.pdf", "Ctrl Rules.pdf", "Cuba Rules.pdf", "Darjeeling Rules.pdf", "Dawn Under Rules.pdf", "Dead Man's Cabal Rules.pdf", "Diplomacy Rules.pdf", "Doge Rules.pdf", "Domination Rules.pdf", "Dracula Rules.pdf", "Easy Money Rules.pdf", "Elfenland Rules.pdf", "Euphoria Rules.pdf", "Everdell Rules.pdf", "Facets Of Fortune Rules.pdf", "Fast Flowing Forest Fellers Rules.pdf", "Fearsome Floors Rules.pdf", "Finca Rules.pdf", "Fire Tower Rules.pdf", "Fired Up Rules.pdf", "Flandern Rules.pdf", "Forbidden Island Rules.pdf", "Formidable Foes Rules.pdf", "Fossil Find Rules.pdf", "Friedrich Rules.pdf", "Fury Of Dracula Rules.pdf", "Game of the States Rules.pdf", "Genoa Rules.pdf", "Ghost Chase Rules.pdf", "Gipf Rules.pdf", "Go to the Head of the Class Rules.pdf", "Goa Rules.pdf", "Goosebumps Rules.pdf", "Guatemala Cafe Rules.pdf", "Hacienda Rules.pdf", "Hamburgum Rules.pdf", "Hare and Tortoise Rules.pdf", "Harry Potter Diagon Alley Rules.pdf", "Harry Potter Halls of Hogwarts Rules.pdf", "Harry Potter Mystery At Hogwarts Rules.pdf", "Hellas Rules.pdf", "Hermetica Rules.pdf", "Hero's Crossing Rules.pdf", "High School Musical Mystery Date Rules.pdf", "Hollywood Shuffle Rules.pdf", "Hotels Rules.pdf", "Hues And Cues Rules.pdf", "Hydro Soakers Rules.pdf", "Ingenious Rules.pdf", "It's A Wonderful Life Rules.pdf", "Jinx Rules.pdf", "Keys To The Castle Rules.pdf", "King Of New York Rules.pdf", "Life Rules.pdf", "Like Minds Rules.pdf", "Loaded Questions Rules.pdf", "Mad Magazine Rules.pdf", "Mall Madness Rules.pdf", "Manipulate Rules.pdf", "Masterpiece Rules.pdf", "Materia Prima Rules.pdf", "MindTrap Rules.pdf", "Money Bags Rules.pdf", "Monopoly Rules.pdf", "Monsters Menace Rules.pdf", "Namesake Rules.pdf", "Nightlancer Rules.pdf", "Nowhere To Go Rules.pdf", "NumRush Rules.pdf", "Off The Rails Rules.pdf", "Outlaws Rules.pdf", "Overbooked Rules.pdf", "Pandemic Rules.pdf", "Partners Rules.pdf", "Passtally Rules.pdf", "Patchwork Rules.pdf", "Payday Rules.pdf", "Pendulum Rules.pdf", "Periorbis Rules.pdf", "Phase 10 Twist Rules.pdf", "Phone Phever Rules.pdf", "Pictionary Rules.pdf", "Pictopia Rules.pdf", "Pokemon Master Trainer Rules.pdf", "PokerChess Rules.pdf", "Polygon Rules.pdf", "Portals And Prophets Rules.pdf", "Power Barons Rules.pdf", "Power Grid Rules.pdf", "Puck Bumpers Rules.pdf", "Puerto Rico Rules.pdf", "Queens & Kings Rules.pdf", "Raccoon Tycoon Rules.pdf", "Real Dumb Laws Rules.pdf", "Red Rising Rules.pdf", "Risk Rules.pdf", "Risky Arcade Rules.pdf", "Road To Infamy Rules.pdf", "Robo Rally Rules.pdf", "Rolling Realms Rules.pdf", "Ruin Rules.pdf", "Running Round Riverdale Rules.pdf", "Rush Hour Rules.pdf", "Scene It Rules.pdf", "Scotland Yard Rules.pdf", "Scrabble Rules.pdf", "Scrambled States of America Rules.pdf", "Scuttler's Island Rules.pdf", "Scythe Rules.pdf", "Sequence Numbers Rules.pdf", "Sequence Rules.pdf", "Settlers Of Catan Rules.pdf", "Shark Attack Rules.pdf", "Shut The Box Rules.pdf", "Small World Rules.pdf", "Sonora Rules.pdf", "Sorry Rules.pdf", "Sort It Out Rules.pdf", "SpongeBob Splash and Roll Rules.pdf", "Spy Alley Rules.pdf", "Stone Age Rules.pdf", "Stone Daze Rules.pdf", "Stratego Rules.pdf", "Summer Camp Rules.pdf", "Survivor Rules.pdf", "Suspicion Rules.pdf", "Takenoko Rules.pdf", "Tapestry Rules.pdf", "Terraforming Mars Rules.pdf", "The Joke Game Rules.pdf", "The Logo Board Game Rules.pdf", "The New Yorker Rules.pdf", "The Newlywed Game Rules.pdf", "The Perilous Parlor Rules.pdf", "The Primary Rules.pdf", "Therapy Rules.pdf", "Ticket to Ride Rules.pdf", "Titanic Rules.pdf", "Travel Trivia Challenge Rules.pdf", "Tribond Rules.pdf", "Trivial Pursuit Rules.pdf", "Trump The Game Rules.pdf", "Trust Me Rules.pdf", "Upwords Rules.pdf", "Valhal Rules.pdf", "Vegas Showdown Rules.pdf", "Vertium Rules.pdf", "Viceroy Rules.pdf", "Vikings Rules.pdf", "Villainous Rules.pdf", "Viticulture Rules.pdf", "Wayfinders Rules.pdf", "Wealth of Nations Rules.pdf", "Where Is Carmen Sandiego Rules.pdf", "Whew Rules.pdf", "Words Of Wiz Dumb Rules.pdf", "Worst Case Scenario Rules-1.png", "Worst Case Scenario Rules.pdf", "You Might Be A Redneck If Rules.pdf", "You Must Be An Idiot Rules.pdf", "Zathura Rules.pdf", "Zoofari Rules.pdf"];
   const childrenGames = ["Animal Act Rules.pdf", "Appletters Rules.pdf", "Barnyard Critters Rules.pdf", "BBQ Blitz Rules.pdf", "Big Trouble Rules.pdf", "Brownie Match Rules.pdf", "Busy Bodies Rules.pdf", "Candy Land Rules.pdf", "Captain Bones Gold Rules.pdf", "Cat Crimes Rules.pdf", "Cat in the Hat Rules.pdf", "Chairs Rules.pdf", "Cheeky Butts Rules.pdf", "Chicken Cha Cha Cha Rules.pdf", "Chutes and Ladders Rules.pdf", "Circus Flohcati Rules.pdf", "Clack Rules.pdf", "Coconuts Rules.pdf", "Connect Four Rules.pdf", "Count Your Chickens Rules.pdf", "Crown War Rules.pdf", "Cubes Rules.pdf", "Diggity Dogs Rules.pdf", "Disneys Magic Kingdom Rules.pdf", "Don't Cut The Cheese Rules.pdf", "Doodle Dice Rules.pdf", "Enchanted Forest Rules.pdf", "Feed The Woozle Rules.pdf", "Five Little Monkeys Rules.pdf", "Fraction Formula Rules.pdf", "F-R-A-N-G-O Rules.pdf", "Frankie's Food Truck Fiasco Rules.pdf", "Free Range Fractions Rules.pdf", "Frida's Fruit Fiesta Rules.pdf", "Fruitirelli Rules.pdf", "Fruitominoes Rules.pdf", "Galloping Pigs Rules.pdf", "Gas Out Rules.pdf", "Giro Galoppo Rules.pdf", "Global Warning Rules.pdf", "Gnip Gnop Rules.pdf", "Greedy Granny Rules.pdf", "Green Eggs and Ham Rules.pdf", "Guess Who Rules.pdf", "Gulo Gulo Rules.pdf", "Halli Galli Rules.pdf", "Hi Ho Cherry-O Rules.pdf", "Hip Hopscotch Rules.pdf", "Honey Bee Tree Rules.pdf", "Hoot Owl Hoot Rules.pdf", "Hot Potato Rules.pdf", "Hungry Hungry Hippos Rules.pdf", "Igloo Mania Rules.pdf", "Kazink Rules.pdf", "Kitten Caboodle Rules.pdf", "Let's Go Fishin' Rules.pdf", "Link-O Rules.pdf", "Little Mermaid Rules.pdf", "Littlest Pet Shop Rules.pdf", "Loose Caboose Rules.pdf", "Make 7 Rules.pdf", "Mighty Mice Rules.pdf", "Monster Maker Rules.pdf", "Mosquito Madness Rules.pdf", "My Little Scythe Rules.pdf", "My Weird School Game Rules.pdf", "Over And Out Rules.pdf", "Pancake Pile Up Rules.pdf", "Pick Up Sticks Rules.pdf", "Pop The Pig Rules.pdf", "PowerHaus Rules.pdf", "Princess Spinning Wishes Rules.pdf", "Rail Wreck Rules.pdf", "Ready Set Woof Rules.pdf", "Recycle Rally Rules.pdf", "Riddle Cube Rules.pdf", "Robot Face Race Rules.pdf", "Rockin' Math Rules.pdf", "Shake Up Rules.pdf", "Shelby's Snack Shack Rules.pdf", "Silly Story Maker Rules.pdf", "Silly Street Rules.pdf", "Slappy Camper Rules.pdf", "Snapshot Safari Rules.pdf", "Sophie's Seashell Scramble Rules.pdf", "Space Spinners Rules.pdf", "Speedy Eddy Rules.pdf", "Stack Up Rules.pdf", "Super Sleuth Vocabulary Rules.pdf", "Surfside Scramble Rules.pdf", "Take Away Rules.pdf", "The Enchanted Slippers Rules.pdf", "The Furglars  Rules.pdf", "The Game Of Chips Rules.pdf", "The Lion Sleeps Tonight Rules.pdf", "The Sneaky Snacky Squirrel Rules.pdf", "Tilt'n Tumble Rules.pdf", "Top Spot Rules.pdf", "Topple Rules.pdf", "Trouble Rules.pdf", "Very Hungry Caterpillar Rules.pdf", "Walk Like A Chicken Rules.pdf", "WaterGame Rules.pdf", "What's In Ned's Head Rules.pdf", "When Pigs Fly Rules.pdf", "Wiggle Waggle Whiskers Rules.pdf", "Word On The Street Rules.pdf", "Wormy Apples Rules.pdf", "Zingo Rules.pdf", "Zip-It Rules.pdf"];
   const diceGames = ["3Up 3Down Rules.pdf", "5-Minute Dungeon Rules.pdf", "7 Ghosts Rules.pdf", "Age Of Primes Rules.pdf", "An Embarrassment of Pandas Rules.pdf", "Antiquity Quest Rules.pdf", "Apples To Apples Rules.pdf", "Bandida Rules.pdf", "Bandido Rules.pdf", "Blink Rules.pdf", "Bonc! Rules.pdf", "Boom Goes The Dynamite Rules.pdf", "Bowling Dice Rules.pdf", "Brink Rules.pdf", "Bunco Rules.pdf", "Camping with Sasquatch Rules.pdf", "Cobra Paw Rules.pdf", "Cool Cursive Rules.pdf", "Cover Your Assets Rules.pdf", "Dicedout Rules.pdf", "Diesel Demolition Derby Rules.pdf", "Dig Dig Rules.pdf", "Djinns of the High Desert Rules.pdf", "Dodgeball Rules.pdf", "Dodgy Dice Rules.pdf", "Doom On You Rules.pdf", "Doomlings Rules.pdf", "Dos Rollos Rules.pdf", "Double Ditto Rules.pdf", "Drunk Stoned Or Stupid Rules.pdf", "Dweebies Rules.pdf", "Emojinks Rules.pdf", "Exploding Kittens Rules.pdf", "Eyeball Boxing Rules.pdf", "Fact or Crap Rules.pdf", "Farkle Rules.pdf", "Fart Rules.pdf", "Fetus Feud Rules.pdf", "Filibuster Rules.pdf", "Five Crowns Rules.pdf", "Fixing Foolish Rules.pdf", "Flipside Jam Rules.pdf", "Flock Of Fame Rules.pdf", "Fluxx Rules.pdf", "Food Fight Rules.pdf", "Forest Of Fate Rules.pdf", "Forks In The Timeline Rules.pdf", "Fraud Rules.pdf", "Frontier The Card Game Rules.pdf", "Full Sun Rules.pdf", "Fusion Rules.pdf", "Get Bit Rules.pdf", "Gnummies Rules.pdf", "Go Nuts Rules.pdf", "Gubs Rules.pdf", "Hamsterdam Rules.pdf", "Hanabi Rules.pdf", "Hands Down Rules.pdf", "Hasty Baker Rules.pdf", "Hera and Zeus Rules.pdf", "Here To Slay Rules.pdf", "Hit The Deck Rules.pdf", "Hoagie Rules.pdf", "Hojo Pojo Rules.pdf", "Holy Cards Rules.pdf", "Hungry Dragons Rules.pdf", "Ill-Tempered Tikis Rules.pdf", "Illusion Rules.pdf", "Iota Rules.pdf", "KaBAM Rules.pdf", "Karma Rules.pdf", "Kill The Unicorns Rules.pdf", "Kings In The Corner Rules.pdf", "Lightning Dice Rules.pdf", "Llama Drama Rules.pdf", "Llamasters Rules.pdf", "Loot Rules.pdf", "Lost Cities Rules.pdf", "Machi Koro Rules.pdf", "Magical Unicorn Quest Rules.pdf", "Minecraft Rules.pdf", "Monikers Rules.pdf", "Monster Mania Rules.pdf", "Moose Master Rules.pdf", "Name 5 Rules.pdf", "Of Knight And Ninjas Rules.pdf", "Oh Fruck! Rules.pdf", "One Night Ultimate Werewolf Rules.pdf", "Palm Island Rules.pdf", "Phase 10 Dice Rules.pdf", "Pie Rats Of The Carob Bean Farm Rules.pdf", "Pirates Rules.pdf", "Pit Rules.pdf", "Pizza Rush Rules.pdf", "Potato Pirates Rules.pdf", "Prohibitionists Rules.pdf", "Prospectica Rules.pdf", "Pusheen Purrfect Pick Rules.pdf", "Q-bitz Rules.pdf", "Quelf Rules.pdf", "Quiddler Rules.pdf", "Qwinto Rules.pdf", "Qwixx Rules.pdf", "Rage Rules.pdf", "Rats Rules.pdf", "Ratuki Rules.pdf", "Read My List Rules.pdf", "Rememory Rules.pdf", "Retroroll Rules.pdf", "Rhyme Out Rules.pdf", "Ribbit Rivalry Rules.pdf", "Rise Of The Exiled Rules.pdf", "Rites Of Cthulhu Rules.pdf", "Robottery 101 Rules.pdf", "Roll 4 Rocks Rules.pdf", "Rook Rules.pdf", "Scenarios Rules.pdf", "Scum Rules.pdf", "Sequence Dice Rules.pdf", "Shake Rules.pdf", "Silent But Deadly Rules.pdf", "Silver And Gold Rules.pdf", "Skip Bo Rules.pdf", "Skull King Rules.pdf", "Slap'n Grab Rules.pdf", "Sleeping Queens Rules.pdf", "Snowball Fight Rules.pdf", "Solitaire Frenzy Rules.pdf", "Space Editor Rules.pdf", "Space Race Rules.pdf", "Spaceteam Rules.pdf", "Spite and Malice Rules.pdf", "Splendor Rules.pdf", "Split Rules.pdf", "Spot It Rules.pdf", "Sting Rules.pdf", "Sushi Go Rules.pdf", "Swap Rules.pdf", "Swipe Dice Rules.pdf", "Swipe Rules.pdf", "Taco Cat Goat Cheese Pizza Rules.pdf", "Taco Vs Burrito Rules.pdf", "The Bears And The Bees Rules.pdf", "The Game Rules.pdf", "The Mind Rules.pdf", "Tiny Trees Rules.pdf", "Tokaido Rules.pdf", "Tome Rules.pdf", "TooT Rules.pdf", "Trash Pandas Rules.pdf", "Trash War Rules.pdf", "Treasure Hogs Rules.pdf", "Treats And Tricks Rules.pdf", "Trifecta Rules.pdf", "Uno Cards Rules.pdf", "Unstable Unicorns Rules.pdf", "Viking Games Rules.pdf", "Wackee Six Rules.pdf", "Water Fight Rules.pdf", "Wig Out Rules.pdf", "Wizards and Witches Rules.pdf", "Wordical Rules.pdf", "Yahtzee Rules.pdf", "Yahtzee Turbo Rules.pdf", "You Wish Rules.pdf", "Zoomaka Rules.pdf"];
   const partyGames = ["25 Words Or Less Rules.pdf", "5 Second Rule Rules.pdf", "80's 90's Trivia Game Rules.pdf", "A Little Wordy Rules.pdf", "AdVersity Rules.pdf", "Aggravation Rules.pdf", "All Of Us Rules.pdf", "Attika Rules.pdf", "Awkward Family Photos Rules.pdf", "Back And 4th Rules.pdf", "Bad People Rules.pdf", "Balderdash Rules.pdf", "Balloon Cup Rules.pdf", "Bananagrams Rules.pdf", "Bandits Rules.pdf", "Bausack Rules.pdf", "Been There Done That Rules.pdf", "Big Box Carcassonne Rules.pdf", "Big Manitou Rules.pdf", "Blank Slate Rules.pdf", "Blokus Rules.pdf", "Boggle Rules.pdf", "Bohnanza Rules.pdf", "Bohnaparte Rules.pdf", "Bonkers Rules.pdf", "Booby Trap Rules.pdf", "Bounce Off Rules.pdf", "Boxers or Briefs Rules.pdf", "Brides And Maids Rules.pdf", "Brilliant Or BS Rules.pdf", "Buccaneer Rules.pdf", "Bucket Of Doom Rules.pdf", "Build Up Rules.pdf", "Bunco Party In Box Rules.pdf", "Buzzword Rules.pdf", "Can You Dig It Rules.pdf", "Carolus Magnus Rules.pdf", "Catch Phrase Rules.pdf", "Celebrity Head Rules.pdf", "Charades Rules.pdf", "Cheater Rules.pdf", "Chopstick Dexterity Mega Challenge 3000 Rules.pdf", "Chow Crown Rules.pdf", "Chronology Rules.pdf", "Cinco Linko Rules.pdf", "Click Clack Lumberjack Rules.pdf", "Colorbrain Rules.pdf", "Coloretto Rules.pdf", "Cosmocracy Rules.pdf", "Curses Rules.pdf", "Dead Ringer Rules.pdf", "Deal Or No Deal Rules.pdf", "Death Of The Party Rules.pdf", "Dominion Rules.pdf", "Dominoes Rules.pdf", "Don't You Forget It Rules.pdf", "Encore Rules.pdf", "Eyecatcher Rules.pdf", "Family Feud Rules.pdf", "Felix: The Cat In The Sack Rules.pdf", "Fibber Rules.pdf", "Fiji Rules.pdf", "Final Challenge Rules.pdf", "Fjords Rules.pdf", "Frank's Zoo Rules.pdf", "FridgePong Rules.pdf", "Funemployed Rules.pdf", "Funny Friends Rules.pdf", "Galaxy Trucker Rules.pdf", "Game For Fame Rules.pdf", "Girl Talk Rules.pdf", "Gloria Mundi Rules.pdf", "Googly Eyes Rules.pdf", "Gotcha Rules.pdf", "Gridopolis Rules.pdf", "Grounded For Life Rules.pdf", "Guess Where Rules.pdf", "Guesstures Rules.pdf", "Happy Salmon Rules.pdf", "Hedbanz Rules.pdf", "High Bohn Plus Rules.pdf", "Hot Seat Rules.pdf", "Imagin Iff Rules.pdf", "Incohearent Rules.pdf", "It's In The Bag Rules.pdf", "JabberJot Rules.pdf","Jenga Rules.pdf", "Jeopardy Rules.pdf", "Judge For Yourself Rules.pdf", "Kerplunk Rules.pdf", "Klask Rules.pdf", "Likewise Rules.pdf", "Linkee Rules.pdf", "Long Story Short Rules.pdf", "Love Letter Rules.pdf", "Mad Gab Rules.pdf", "Malarky Rules.pdf", "Mastermind Rules.pdf", "Match Mate Rules.pdf", "Mental Blocks Rules.pdf", "Mind Twist Rules.pdf", "Mini Pong Rules.pdf", "Morphology Rules.pdf", "Movies Trivia Game Rules.pdf", "Mr. Hu Said What Rules.pdf", "Mr Lister's Quiz Shootout Rules.pdf", "Mumbo Jumbo Rules.pdf", "Mystify Rules.pdf", "Nacho Loco Rules.pdf", "Never Have I Ever Rules.pdf", "Obama Llama Rules.pdf", "Once Upon A Time Rules.pdf", "One Word Rules.pdf", "Othello Rules.pdf", "Over-Rated Rules.pdf", "Pana Po'o Rules.pdf", "Perudo Rules.pdf", "Pick Your Poison Rules.pdf", "Pickles To Penguins Rules.pdf", "Pictureka Rules.pdf", "PicWits Rules.pdf", "Pie Face Rules.pdf", "Pik Qwik Rules.pdf", "Poetry For Neanderthals Rules.pdf", "Pun Intended Rules.pdf", "Quick Cups Rules.pdf", "Qwirkle Rules.pdf", "Racko Rules.pdf", "Really Bad Art Rules.pdf", "Rehab Rules.pdf", "Relative Insanity Rules.pdf", "Respond Rules.pdf", "Revenge Of The Blank Rules.pdf", "Reverse Charades Rules.pdf", "Rollick Rules.pdf", "Rummikub Rules.pdf", "Salem 1692 Rules.pdf", "Samurai Rules.pdf", "Say Anything Rules.pdf", "Scrawl Rules.pdf", "Scribblish Rules.pdf", "Scruble Cube Rules.pdf", "Secret Hitler Rules.pdf", "Shake Down Rules.pdf", "Sketchy Rules.pdf", "Skribble Head Rules.pdf", "Smarter Than A 5th Grader Rules.pdf", "Smarty Party Rules.pdf", "Speed Charades Rules.pdf", "Speedy Words Rules.pdf", "Spill And Spell Rules.pdf", "Spoof Rules.pdf", "Spoons Rules.pdf", "Stare Rules.pdf", "Story Bowl Rules.pdf", "Such and Such Rules.pdf", "Switch 16 Rules.pdf", "Sybarit Rules.pdf", "Taboo Rules.pdf", "Tetris Link Rules.pdf", "That's It Rules.pdf", "That's What She Said Rules.pdf", "The Censored Game Rules.pdf", "The Chameleon Rules.pdf", "The Game Of Things Rules.pdf", "The Metagame Rules.pdf", "The Price Is Right Rules.pdf", "The Root Beer Float Challenge Rules.pdf", "The Sci Or Fi Files Rules.pdf", "The Voting Game Rules.pdf", "Throw Throw Burrito Rules.pdf", "Tip Of The Tongue Rules.pdf", "Tortuga 1667 Rules.pdf", "Tri-Ominos Rules.pdf", "Triple Four Rules.pdf", "True Colors Rules.pdf", "Truth Be Told Rules.pdf", "Truth Bombs Rules.pdf", "T-Shirt Game Rules.pdf", "Urban Dictionary Rules.pdf", "Visionary Rules.pdf", "Visual Eyes Rules.pdf", "Watch Ya Mouth Rules.pdf", "Water Works Rules.pdf", "Wavelength Rules.pdf", "What Do You Meme Rules.pdf", "What? Rules.pdf", "What The Film?! Rules.pdf", "What Would Lizzie Do Rules.pdf", "What's Under The Carpet Rules.pdf", "What's Yours Like Rules.pdf", "Wheel of Fortune Rules.pdf", "Where's the Money, Lebowski Rules.pdf", "Wildfire Rules.pdf", "Wing It Rules.pdf", "Wink Rules.pdf", "Wit's End Rules.pdf", "Wonky Rules.pdf", "Word Mines Rules.pdf", "Wordle The Party Game Rules.pdf", "Wordplay Rules.pdf", "Yackety Smack Rules.pdf", "You Are A Liar Rules.pdf"];
 
-  // Muestra el modal al hacer click en "Select a Game"
+  // Show Modal
   selectGameButton.addEventListener('click', () => {
     gameModal.style.display = 'flex';
   });
 
-  // Cierra el modal al hacer click en la "X"
+  // Close Modal
   closeModalButton.addEventListener('click', () => {
     gameModal.style.display = 'none';
   });
 
-  // Muestra las opciones de juegos al hacer click en las categorías
+  // Display games from array
   document.querySelectorAll('.category-button').forEach(button => {
     button.addEventListener('click', function() {
       const category = this.getAttribute('data-category');
@@ -303,8 +295,6 @@
       optionsDiv.style.display = isVisible ? 'none' : 'flex';
     });
   });
-
-  // Llenar las opciones de juegos
   function fillGameOptions(category, games) {
     const optionsDiv = document.getElementById(`${category}-games`);
     games.forEach(game => {
@@ -317,13 +307,12 @@
       optionsDiv.appendChild(option);
     });
   }
-
   fillGameOptions('board', boardGames);
   fillGameOptions('children', childrenGames);
   fillGameOptions('dice', diceGames);
   fillGameOptions('party', partyGames);
 
-  // Filtra los juegos según la búsqueda
+  // Filter games by searching
   gameSearch.addEventListener('input', function() {
     const searchTerm = this.value.toLowerCase();
     const gameOptions = document.querySelectorAll('.game-option');
@@ -347,28 +336,22 @@
     }
   });
 
-  // Selección de un juego
+  // Select a game
   function selectGame(gameName) {
     const newMessage = document.createElement('li');
     newMessage.classList.add('message', 'sent');
     newMessage.innerHTML = `<div class="message-text"><div class="message-content">You selected: ${gameName}</div></div>`;
     messagesList.appendChild(newMessage);
-
-    // Oculta el modal
     gameModal.style.display = 'none';
-
-    // Habilita el formulario de mensaje
     messageForm.style.display = 'flex';
-
-    // Actualiza el campo oculto con el nombre del archivo seleccionado
     document.getElementById('pdf-context-field').value = gameName;
   }
 
-  // Funcionalidad del formulario de mensajes
+  // Message sending to backend
   function scrollToBottom() {
     setTimeout(() => {
       messagesList.scrollTop = messagesList.scrollHeight;
-    }, 100); // Ajusta el retraso si es necesario
+    }, 100);
   }
 
   messageForm.addEventListener('submit', (event) => {
@@ -425,8 +408,6 @@
       scrollToBottom();
     });
   });
-
-  // Cierra el modal si se hace clic fuera del contenido
   window.addEventListener('click', (event) => {
     if (event.target === gameModal) {
       gameModal.style.display = 'none';
